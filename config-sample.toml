@@ -1,0 +1,45 @@
+# Listen address default is ::1 on port 9150 interfaces
+# The default will listen only on IPv6 localhost
+
+#listen = "[::]:9150" # All interfaces on port 9150
+#listen = "127.0.0.1:9150" # IPv4 localhost
+#listen = "0.0.0.0:9150" # IPv4 only
+
+# By default, all datasets are reported for general metrics (free, used...)
+# You can disable this and only list dataset configured below by setting
+# all_datasets to false
+#all_datasets = false # Default to true
+
+# By default, all pools are reported, if set to false, pools must be listed
+# below
+#all_pools = false # Default to true
+
+# Refresh interval. The exporter will not refresh on request, but instead
+# it will refresh asynchronously every "interval" miliseconds
+interval = 10_000 # Default to 60_000 (60 seconds)
+
+# Snapshots are regex matching ZFS snapshot names
+[[snapshots]]
+# The name can be anything, it is only used in the datasets part
+# of the configuration to reference this part
+name = "auto"
+# This would match ZFS autobackup snapshots named
+# data/backups/something@job-20220128010122
+# It is only matched on the snapshot name, after the @
+# It should have two named capture, label and id
+# id MUST be unique per label after matching this regex
+match = '(?P<label>\w+)-(?P<id>\d+)'
+
+# A simple dataset to check
+[[datasets]]
+# The full zfs name of the dataset
+name = "data/backups/mybackup"
+# Snapshot to age check, name are defined above in snapshots section
+snapshots = ["auto"]
+# Should we recurse down? Default to False
+recurse = true
+
+
+# Only required if all_pools is false
+[[pools]]
+name = "zroot"

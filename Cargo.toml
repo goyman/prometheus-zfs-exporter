@@ -1,0 +1,16 @@
+[package]
+name = "prometheus-zfs-exporter"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+prometheus_exporter = "0.8"
+env_logger = "0.9"
+serde = { version = "1.0.136", features = ["derive"] }
+toml = "0.5.9"
+regex = "1.5.5"
+structopt = "0.3.26"
+async-std = { version = "1.11.0", features = ["attributes"] }
+anyhow = "1.0.56"
