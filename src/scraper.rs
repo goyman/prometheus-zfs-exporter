@@ -358,20 +358,21 @@ impl Scraper {
         I: IntoIterator<Item = S>,
         S: AsRef<OsStr>,
     {
-        let stdout = Command::new(cmd)
+        let child = Command::new(cmd)
             .args(args)
             .stdout(Stdio::piped())
             .spawn()
-            .with_context(|| "Cannot execute command")?
-            .stdout
+            .with_context(|| "Cannot execute command")?;
+
+        let out = child
+            .wait_with_output()
             .with_context(|| "Cannot capture stdout")?;
 
-        let reader = BufReader::new(stdout);
-        reader
+        let stdout = String::from_utf8_lossy(&out.stdout);
+
+        stdout
             .lines()
-            .map(|line| {
-                Ok(line.with_context(|| "Cannot read line")?.trim().to_string())
-            })
+            .map(|line| Ok(line.trim().to_string()))
             .collect()
     }
 }
