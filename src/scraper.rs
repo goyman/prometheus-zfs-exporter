@@ -6,8 +6,6 @@ use anyhow::Result;
 use regex::Regex;
 use std::collections::HashMap;
 use std::ffi::OsStr;
-use std::io::BufRead;
-use std::io::BufReader;
 use std::process::Command;
 use std::process::Stdio;
 
